@@ -4,7 +4,7 @@ enum ListenModel {
 }
 
 enum ThinkModel {
-    Claude = "claude-3-5-sonnet",
+    Claude = "claude-3-5-haiku-latest",
     GPT = "gpt-4o",
 }
 
