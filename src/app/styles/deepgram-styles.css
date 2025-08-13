@@ -92,7 +92,6 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-/* Temporary global classes until we convert Body component */
 .dg-section {
     padding: var(--dg-space-4) var(--dg-space-4);
     margin-bottom: var(--dg-space-5);
@@ -219,22 +218,20 @@ body {
 }
 
 .form__group {
-    margin-bottom: var(--dg-space-1); /* Much tighter - 4px */
-    margin-top: var(--dg-space-6); /* Reduced from 2em to 24px */
-    width: 100%; /* Ensure form groups take full width */
+    margin-bottom: var(--dg-space-1);
+    margin-top: var(--dg-space-6);
+    width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center labels and inputs */
+    align-items: center;
 }
 
-/* First form group doesn't need top margin */
 .form__group:first-child {
     margin-top: 0;
 }
 
-/* Last form group with button needs more space */
 .form__group:last-child {
-    margin-top: var(--dg-space-10); /* More space before the button (32px) */
+    margin-top: var(--dg-space-10);
 }
 
 .form__input {
@@ -244,31 +241,29 @@ body {
     background-color: var(--dg-surface);
     padding: var(--dg-space-3) var(--dg-space-4);
     width: 100%;
-    max-width: 20rem; /* Limit input width for better centering */
+    max-width: 20rem;
     font-size: var(--dg-text-base);
     font-family: var(--dg-font-family-body);
     transition: all var(--dg-transition-normal);
-    text-align: left; /* Keep input text left-aligned for readability */
+    text-align: left;
 }
 
-/* Form labels - left aligned with more spacing */
 .form label {
     text-align: left;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Keep inputs centered */
+    align-items: center;
     width: 100%;
     font-weight: var(--dg-font-weight-medium);
     color: var(--dg-text-primary);
-    margin-bottom: var(--dg-space-6); /* Much more space between label and input */
+    margin-bottom: var(--dg-space-6);
 }
 
 .form label span {
-    /* Style for the label text itself - left aligned with more space */
     width: 100%;
-    max-width: 20rem; /* Match input width */
+    max-width: 20rem;
     text-align: left;
-    margin-bottom: var(--dg-space-5); /* More space between label text and input (16px) */
+    margin-bottom: var(--dg-space-5);
     font-size: var(--dg-text-base);
     color: var(--dg-text-primary);
 }

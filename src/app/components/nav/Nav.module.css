@@ -1,4 +1,4 @@
-/* Nav.module.css - Uses design system tokens */
+/* Navigation component styles */
 
 .nav {
     position: fixed;
@@ -18,24 +18,24 @@
 .container {
     max-width: var(--dg-container-max-width);
     margin: 0 auto;
-    padding: var(--dg-space-3) var(--dg-space-6); /* More horizontal padding */
+    padding: var(--dg-space-3) var(--dg-space-6);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--dg-space-24); /* Much more space between logo and button (48px) */
+    gap: var(--dg-space-24);
 }
 
 @media (min-width: 640px) {
     .container {
-        padding: var(--dg-space-4) var(--dg-space-8); /* More horizontal padding on tablets */
-        gap: var(--dg-space-20); /* Even more space on larger screens (64px) */
+        padding: var(--dg-space-4) var(--dg-space-8);
+        gap: var(--dg-space-20);
     }
 }
 
 @media (min-width: 1024px) {
     .container {
-        padding: var(--dg-space-4) var(--dg-space-10); /* Maximum horizontal padding on desktop */
-        gap: var(--dg-space-24); /* Maximum space between elements (80px) */
+        padding: var(--dg-space-4) var(--dg-space-10);
+        gap: var(--dg-space-24);
     }
 }
 

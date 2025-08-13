@@ -1,4 +1,4 @@
-/* ButtonLink.module.css - Uses design system tokens */
+/* ButtonLink component styles */
 
 .button {
     background-color: transparent;
@@ -40,7 +40,7 @@
 
 @media (max-width: 768px) {
     .button {
-        font-size: var(--dg-text-xs);  /* Even smaller on mobile */
+        font-size: var(--dg-text-xs);
         padding: var(--dg-space-1) var(--dg-space-3);
     }
 }

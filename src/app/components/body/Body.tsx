@@ -6,19 +6,28 @@ import { useState, useRef } from "react";
 import { AgentEvents, DeepgramClient, type AgentLiveClient } from "@deepgram/sdk";
 import { voiceAgentLog } from "@/app/lib/Logger";
 
+/**
+ * Main voice agent interface component
+ * Handles authentication, connection, audio processing, and conversation display
+ */
 export const Body = () => {
+    // UI and connection state
     const [micState, setMicState] = useState<"open" | "loading" | "closed">("closed");
     const [error, setError] = useState<string | null>(null);
     const [token, setToken] = useState<string | null>(null);
     const [connected, setConnected] = useState<boolean>(false);
+
+    // Agent configuration
     const [listenModel, setListenModel] = useState<ListenModel>(ListenModel.General);
     const [thinkModel, setThinkModel] = useState<ThinkModel>(ThinkModel.Claude);
     const [speechModel, setSpeechModel] = useState<SpeechModel>(SpeechModel.Thalia);
+
+    // Client and conversation state
     const [client, setClient] = useState<AgentLiveClient | null>(null);
     const [transcript, setTranscript] = useState<Array<{ role: string, content: string }>>([]);
     const [isAgentSpeaking, setIsAgentSpeaking] = useState<boolean>(false);
 
-    // Audio playback management
+    // Audio playback management refs
     const audioContextRef = useRef<AudioContext | null>(null);
     const currentAudioSourceRef = useRef<AudioBufferSourceNode | null>(null);
     const nextStartTimeRef = useRef<number>(0);
@@ -55,6 +64,7 @@ export const Body = () => {
         setIsAgentSpeaking(false);
     };
 
+    // === AUTHENTICATION ===
     const authenticate = () => {
         voiceAgentLog.auth("Starting authentication process...");
         fetch("/api/token", {
@@ -78,6 +88,7 @@ export const Body = () => {
         })
     }
 
+    // === CONNECTION MANAGEMENT ===
     const disconnect = () => {
         if (!client) {
             console.warn("⚠️ DISCONNECT: No client connected to disconnect.");
@@ -207,6 +218,7 @@ export const Body = () => {
             // Don't set isAgentSpeaking false here - let the queue finish
         })
 
+        // Process queued audio chunks for seamless playback
         const processAudioQueue = async () => {
             if (audioQueueRef.current.length === 0) return;
 
@@ -219,11 +231,11 @@ export const Body = () => {
                     nextStartTimeRef.current = currentTime;
                 }
 
-                // Process all queued chunks
+                // Process all queued chunks sequentially
                 while (audioQueueRef.current.length > 0) {
                     const audioChunk = audioQueueRef.current.shift()!;
 
-                    // Convert Uint8Array to Int16Array (linear16 format)
+                    // Convert raw audio bytes to linear16 format
                     const audioData = new Int16Array(audioChunk.buffer);
 
                     if (audioData.length === 0) continue; // Skip empty chunks
@@ -275,10 +287,11 @@ export const Body = () => {
             setTranscript(prev => [...prev, { role: message.role, content: message.content }]);
         })
 
+        // === EVENT HANDLERS ===
         // Additional event handlers for comprehensive logging
         client.on(AgentEvents.UserStartedSpeaking, () => {
             voiceAgentLog.agentEvent("UserStartedSpeaking - User began speaking");
-            // Clear audio queue and stop current playback when user interrupts
+            // Handle user interruption: clear audio queue and stop playback
             audioQueueRef.current = [];
             nextStartTimeRef.current = 0;
             setIsAgentSpeaking(false);
@@ -294,6 +307,7 @@ export const Body = () => {
         });
     }
 
+    // === UI RENDER ===
     return (
         <main className="dg-section dg-text-center">
             <div className="dg-hero-title">

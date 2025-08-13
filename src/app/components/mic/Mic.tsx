@@ -10,7 +10,12 @@ interface MicProps {
   onError?: (error: string) => void;
 }
 
+/**
+ * Real-time microphone streaming component
+ * Captures audio at 24kHz and sends linear16 PCM data to Deepgram agent
+ */
 export const Mic = ({ state, client, onError }: MicProps) => {
+  // Recording state and audio processing refs
   const [isRecording, setIsRecording] = useState(false);
   const audioContextRef = useRef<AudioContext | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -18,6 +23,7 @@ export const Mic = ({ state, client, onError }: MicProps) => {
   const sourceRef = useRef<MediaStreamAudioSourceNode | null>(null);
   const isRecordingRef = useRef(false);
 
+  // === RECORDING CONTROL ===
   const startRecording = useCallback(async () => {
     try {
       voiceAgentLog.microphone("Starting real-time microphone streaming...");
@@ -48,6 +54,7 @@ export const Mic = ({ state, client, onError }: MicProps) => {
       const processor = audioContext.createScriptProcessor(2048, 1, 1);
       processorRef.current = processor;
 
+      // Real-time audio processing callback
       processor.onaudioprocess = (audioProcessingEvent) => {
         if (!client) return;
 
@@ -118,6 +125,8 @@ export const Mic = ({ state, client, onError }: MicProps) => {
     voiceAgentLog.microphone("Microphone streaming stopped");
   }, []);
 
+  // === STATE MANAGEMENT ===
+  // Auto-start/stop recording based on connection state
   useEffect(() => {
     if (state === "open" && client && !isRecordingRef.current) {
       startRecording();
@@ -134,6 +143,7 @@ export const Mic = ({ state, client, onError }: MicProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, client]); // Intentionally excluding function deps to prevent infinite loop
 
+  // === UI RENDER ===
   if (state === "loading") {
     return (
       <div className="dg-status dg-status--warning">
