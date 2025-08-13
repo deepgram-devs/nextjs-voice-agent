@@ -82,7 +82,7 @@ Once running, you can access the application in your browser at `http://localhos
 ## Testing
 
 ```bash
-@TODO
+npm test
 ```
 ## Getting Help
 
