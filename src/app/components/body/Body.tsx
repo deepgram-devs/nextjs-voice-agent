@@ -17,7 +17,6 @@ export const Body = () => {
     const [speechModel, setSpeechModel] = useState<SpeechModel>(SpeechModel.Thalia);
     const [client, setClient] = useState<AgentLiveClient | null>(null);
     const [transcript, setTranscript] = useState<Array<{ role: string, content: string }>>([]);
-    const [isTestMode, setIsTestMode] = useState<boolean>(false);
     const [isAgentSpeaking, setIsAgentSpeaking] = useState<boolean>(false);
 
     // Audio playback management
@@ -296,62 +295,6 @@ export const Body = () => {
         });
     }
 
-    const runPredefinedScript = async () => {
-        if (!client) {
-            setError("No client connected for testing.");
-            return;
-        }
-
-        console.log("🧪 TEST SCRIPT: Starting predefined interaction script...");
-        setIsTestMode(true);
-
-        const testScript = [
-            { delay: 2000, action: () => console.log("🧪 TEST: Agent should greet user") },
-            {
-                delay: 3000, action: () => {
-                    console.log("🧪 TEST: Simulating user question: 'Hello. Can you hear me?'");
-                    // In a real test, we would send actual audio data here
-                }
-            },
-            {
-                delay: 5000, action: () => {
-                    console.log("🧪 TEST: Expected agent response: 'Yes, I can hear you!'");
-                }
-            },
-            {
-                delay: 7000, action: () => {
-                    console.log("🧪 TEST: Simulating user request: 'Tell me a story.'");
-                    // In a real test, we would send actual audio data here
-                }
-            },
-            {
-                delay: 10000, action: () => {
-                    console.log("🧪 TEST: Expected agent response with story");
-                }
-            },
-            {
-                delay: 12000, action: () => {
-                    console.log("🧪 TEST: Simulating user ending: 'Okay. We can end the conversation.'");
-                    // In a real test, we would send actual audio data here
-                }
-            },
-            {
-                delay: 15000, action: () => {
-                    console.log("🧪 TEST: Expected agent farewell");
-                    console.log("🧪 TEST SCRIPT: Completed predefined interaction test");
-                    setIsTestMode(false);
-                }
-            }
-        ];
-
-        testScript.forEach(({ delay, action }) => {
-            setTimeout(action, delay);
-        });
-    }
-
-
-
-
     return (
         <main className={Styles.body}>
             {error && <div className={Styles.error}>{error}</div>}
@@ -403,14 +346,6 @@ export const Body = () => {
                     <div className={Styles.buttonGroup}>
                         <button className={Styles.connectButton} onClick={disconnect}>
                             Disconnect
-                        </button>
-                        <button
-                            className={`${Styles.connectButton} ${isTestMode ? Styles.disabled : ''}`}
-                            onClick={runPredefinedScript}
-                            disabled={isTestMode}
-                            style={{ backgroundColor: isTestMode ? '#9ca3af' : '#10b981' }}
-                        >
-                            {isTestMode ? 'Running Test...' : 'Run Test Script'}
                         </button>
                     </div>
 
