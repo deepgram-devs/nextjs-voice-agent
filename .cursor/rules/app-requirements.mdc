@@ -8,12 +8,11 @@ alwaysApply: false
 
 ## Existing Code In Project
 - CONSIDER existing code that was already produced and refactor where necessary.
-- Should not use React, we prefer Vanilla.JS
+- Should use React as next.js requires it.
 
 ## Core Requirements
 - SHOULD live in a single file with minimal dependencies, i.e. `index.ts`
 - SHOULD use typescript not javascript for server
-- SHOULD use Vanilla JS for UI where applicable
 
 - SHOULD run on next.js
 - SHOULD be deployable on next.js

@@ -5,22 +5,38 @@
   border-radius: 0.375rem;
   display: inline-flex;
   justify-content: center;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  min-height: 44px; /* Touch-friendly minimum */
 }
 
 .appbutton-link:hover {
   background: #00a93d;
   color: white;
+  transform: translateY(-1px);
 }
 
 .appbutton-link.large {
-  padding-left: 0.875rem;
-  padding-right: 0.875rem;
-  padding-top: 0.625rem;
-  padding-bottom: 0.625rem;
+  padding: 0.625rem 0.875rem;
+  font-size: clamp(1rem, 3vw, 1.125rem);
+  min-height: 48px;
+}
+
+@media (max-width: 640px) {
+  .appbutton-link {
+    width: 100%;
+    max-width: 280px;
+    text-align: center;
+    padding: 0.75rem 1rem;
+  }
+
+  .appbutton-link.large {
+    padding: 0.875rem 1.125rem;
+  }
 }
 
 .appbutton-link.secondary {
@@ -29,8 +45,15 @@
   color: inherit;
 }
 
+.appbutton-link.secondary:hover {
+  background: #00e062;
+  color: white;
+}
+
 .appbutton-link-content {
   color: inherit;
   display: flex;
   align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }

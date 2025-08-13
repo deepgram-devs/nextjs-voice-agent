@@ -12,16 +12,25 @@
 }
 
 .nav-margin {
-  height: 100px;
-  max-width: 1536px;
+  min-height: 80px;
+  max-width: 100%;
+  width: 100%;
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   align-content: stretch;
-  padding-left: 2rem;
-  padding-right: 2rem;
+  padding: 1rem 2rem;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .nav-margin {
+    flex-direction: column;
+    padding: 1rem;
+    min-height: auto;
+  }
 }
 
 .nav-logo {
