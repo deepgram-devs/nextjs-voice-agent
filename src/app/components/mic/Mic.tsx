@@ -135,19 +135,27 @@ export const Mic = ({ state, client, onError }: MicProps) => {
   }, [state, client]); // Intentionally excluding function deps to prevent infinite loop
 
   if (state === "loading") {
-    return <div>🎤 Loading microphone...</div>;
+    return (
+      <div className="dg-status dg-status--warning">
+        🎤 Loading microphone...
+      </div>
+    );
   }
 
   if (state === "closed") {
-    return <div>🔇 Microphone disconnected</div>;
+    return (
+      <div className="dg-status dg-status--info">
+        🔇 Microphone disconnected
+      </div>
+    );
   }
 
   return (
-    <div>
+    <div className={`dg-status ${isRecording ? 'dg-status--success' : 'dg-status--primary'}`}>
       {isRecording ? (
-        <div>🎙️ Streaming audio to agent... (24kHz linear16)</div>
+        <>🎙️ Streaming audio to agent (24kHz linear16)</>
       ) : (
-        <div>🎤 Microphone ready for real-time streaming</div>
+        <>🎤 Microphone ready for real-time streaming</>
       )}
     </div>
   );

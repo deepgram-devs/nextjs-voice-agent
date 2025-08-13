@@ -1,18 +1,20 @@
-import Styles from "./ButtonLink.module.css";
+import styles from "./ButtonLink.module.css";
 
 interface ButtonLinkProps {
-    url: string;
-    size?: "small" | "large";
-    children: React.ReactNode;
+  url: string;
+  size?: "small" | "large";
+  children: React.ReactNode;
 }
 
-export const ButtonLink = ({ url, size, children}: ButtonLinkProps) => {
-    return (
-        <a
+export const ButtonLink = ({ url, size, children }: ButtonLinkProps) => {
+  const sizeClass = size === "large" ? styles.large : size === "small" ? styles.small : "";
+
+  return (
+    <a
       href={url}
-      className={`${Styles["appbutton-link"]} ${size === "large" ? Styles.large : Styles.small}`}
+      className={`${styles.button} ${sizeClass}`.trim()}
     >
-      <div className={Styles["appbutton-link-content"]}>{children}</div>
+      {children}
     </a>
-    )
+  )
 }

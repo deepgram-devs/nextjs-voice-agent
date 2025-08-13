@@ -2,7 +2,6 @@
 
 import { ListenModel, SpeechModel, ThinkModel } from "@/app/lib/Models"
 import { Mic } from "../mic/Mic";
-import Styles from "./Body.module.css";
 import { useState, useRef } from "react";
 import { AgentEvents, DeepgramClient, type AgentLiveClient } from "@deepgram/sdk";
 import { voiceAgentLog } from "@/app/lib/Logger";
@@ -296,74 +295,131 @@ export const Body = () => {
     }
 
     return (
-        <main className={Styles.body}>
-            {error && <div className={Styles.error}>{error}</div>}
+        <main className="dg-section dg-text-center">
+            <div className="dg-hero-title">
+                Next.js Voice Agent
+            </div>
+
+            {error && (
+                <div className="dg-status dg-status--error">
+                    {error}
+                </div>
+            )}
 
             <Mic state={micState} client={client} onError={setError} />
 
             {!token && (
-                <button className={Styles.connectButton} onClick={authenticate}>
-                    Authenticate
-                </button>
+                <div className="dg-card">
+                    <h2 className="dg-section-heading">Welcome</h2>
+                    <p className="dg-status dg-status--info">
+                        Click the button below to authenticate with Deepgram and start your voice conversation.
+                    </p>
+                    <button className="btn btn--primary btn--large" onClick={authenticate}>
+                        🔐 Authenticate with Deepgram
+                    </button>
+                </div>
             )}
 
             {token && !connected && (
-                <form className={Styles.configForm}>
-                    <h2 className={Styles.heading}>Agent Configuration</h2>
-                    <label>
-                        Listen Model:
-                        <select name="listen" value={listenModel} onChange={(e) => setListenModel(e.target.value as ListenModel)}>
-                            <option value={ListenModel.General}>General Purpose</option>
-                            <option value={ListenModel.Medical}>Medical</option>
-                        </select>
-                    </label>
-                    <label>
-                        Think Model:
-                        <select name="think" value={thinkModel} onChange={(e) => setThinkModel(e.target.value as ThinkModel)}>
-                            <option value={ThinkModel.Claude}>Claude</option>
-                            <option value={ThinkModel.GPT}>GPT</option>
-                        </select>
-                    </label>
-                    <label>
-                        Speech Model:
-                        <select name="speech" value={speechModel} onChange={(e) => setSpeechModel(e.target.value as SpeechModel)}>
-                            <option value={SpeechModel.Thalia}>Thalia</option>
-                            <option value={SpeechModel.Andromeda}>Andromeda</option>
-                            <option value={SpeechModel.Helena}>Helena</option>
-                            <option value={SpeechModel.Apollo}>Apollo</option>
-                            <option value={SpeechModel.Arcas}>Arcas</option>
-                            <option value={SpeechModel.Aries}>Aries</option>
-                        </select>
-                    </label>
-                    <button className={Styles.connectButton} type="button" onClick={connect}>
-                        Connect to Agent
-                    </button>
-                </form>
+                <div className="dg-card">
+                    <h2 className="dg-section-heading">Agent Configuration</h2>
+                    <form className="form">
+                        <div className="form__group">
+                            <label>
+                                <span>Listen Model:</span>
+                                <select
+                                    className="form__input"
+                                    name="listen"
+                                    value={listenModel}
+                                    onChange={(e) => setListenModel(e.target.value as ListenModel)}
+                                >
+                                    <option value={ListenModel.General}>General Purpose</option>
+                                    <option value={ListenModel.Medical}>Medical</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div className="form__group">
+                            <label>
+                                <span>Think Model:</span>
+                                <select
+                                    className="form__input"
+                                    name="think"
+                                    value={thinkModel}
+                                    onChange={(e) => setThinkModel(e.target.value as ThinkModel)}
+                                >
+                                    <option value={ThinkModel.Claude}>Claude</option>
+                                    <option value={ThinkModel.GPT}>GPT</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div className="form__group">
+                            <label>
+                                <span>Speech Model:</span>
+                                <select
+                                    className="form__input"
+                                    name="speech"
+                                    value={speechModel}
+                                    onChange={(e) => setSpeechModel(e.target.value as SpeechModel)}
+                                >
+                                    <option value={SpeechModel.Thalia}>Thalia</option>
+                                    <option value={SpeechModel.Andromeda}>Andromeda</option>
+                                    <option value={SpeechModel.Helena}>Helena</option>
+                                    <option value={SpeechModel.Apollo}>Apollo</option>
+                                    <option value={SpeechModel.Arcas}>Arcas</option>
+                                    <option value={SpeechModel.Aries}>Aries</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div className="form__group">
+                            <button className="btn btn--primary btn--large" type="button" onClick={connect}>
+                                🚀 Connect to Agent
+                            </button>
+                        </div>
+                    </form>
+                </div>
             )}
 
             {connected && (
                 <>
-                    <div className={Styles.buttonGroup}>
-                        <button className={Styles.connectButton} onClick={disconnect}>
-                            Disconnect
+                    <div className="dg-card">
+                        <h2 className="dg-section-heading">Voice Agent Connected</h2>
+                        <div className={`dg-status ${isAgentSpeaking ? 'dg-status--primary' : 'dg-status--success'}`}>
+                            {isAgentSpeaking ? '🔊 Agent is speaking...' : '✅ Ready for conversation'}
+                        </div>
+                        <button className="btn btn--secondary" onClick={disconnect}>
+                            🔌 Disconnect
                         </button>
                     </div>
 
-                    {/* Audio status indicator */}
-                    <div className={`${Styles.statusIndicator} ${isAgentSpeaking ? Styles.speaking : Styles.ready}`}>
-                        {isAgentSpeaking ? '🔊 Agent is speaking...' : '🔇 Agent audio ready'}
-                    </div>
-
-                    <div className={Styles.transcriptContainer}>
-                        <h2 className={Styles.heading}>Conversation Transcript</h2>
-                        <div className={Styles.transcriptBox}>
+                    <div className="dg-card">
+                        <h2 className="dg-section-heading">Conversation Transcript</h2>
+                        <div className="dg-card dg-card--compact" style={{
+                            maxHeight: '300px',
+                            overflowY: 'auto',
+                            textAlign: 'left',
+                            minHeight: '150px'
+                        }}>
                             {transcript.length === 0 ? (
-                                <p><em>Conversation will appear here...</em></p>
+                                <div className="dg-status dg-status--info">
+                                    <em>Conversation will appear here...</em>
+                                </div>
                             ) : (
                                 transcript.map((message, index) => (
-                                    <div key={index} className={`${Styles.messageItem} ${Styles[message.role]}`}>
-                                        <strong>{message.role === 'user' ? 'You' : 'Assistant'}:</strong>
-                                        {message.content}
+                                    <div key={index} className="dg-card dg-card--compact" style={{
+                                        marginBottom: 'var(--dg-space-3)',
+                                        backgroundColor: message.role === 'user'
+                                            ? 'rgba(19, 239, 147, 0.1)'
+                                            : 'rgba(20, 154, 251, 0.1)',
+                                        borderColor: message.role === 'user'
+                                            ? 'var(--dg-primary)'
+                                            : 'var(--dg-secondary)'
+                                    }}>
+                                        <strong style={{ color: message.role === 'user' ? 'var(--dg-primary)' : 'var(--dg-secondary)' }}>
+                                            {message.role === 'user' ? '🗣️ You' : '🤖 Assistant'}:
+                                        </strong>
+                                        <div style={{ marginTop: 'var(--dg-space-2)' }}>
+                                            {message.content}
+                                        </div>
                                     </div>
                                 ))
                             )}

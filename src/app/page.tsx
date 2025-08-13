@@ -8,7 +8,8 @@ export default function Home() {
       flexDirection: 'column',
       minHeight: '100vh',
       width: '100%',
-      overflow: 'hidden'
+      overflow: 'hidden',
+      paddingTop: '76px' // Account for fixed nav
     }}>
       <Nav />
       <Body />

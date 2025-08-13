@@ -1,59 +1,46 @@
-.appbutton-link {
-  color: inherit;
-  text-decoration: none;
-  background: #81f4b4;
-  border-radius: 0.375rem;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0.5rem 0.75rem;
-  font-size: clamp(0.875rem, 2.5vw, 1rem);
-  font-weight: 500;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-  min-height: 44px; /* Touch-friendly minimum */
+/* ButtonLink.module.css - Uses design system tokens */
+
+.button {
+    background-color: transparent;
+    color: var(--dg-text-secondary);
+    border: var(--dg-border-width-thin) solid var(--dg-border);
+    border-radius: var(--dg-radius-md);
+    padding: var(--dg-space-2) var(--dg-space-4);
+    font-family: var(--dg-font-family-body);
+    font-size: var(--dg-text-sm);
+    font-weight: var(--dg-font-weight-medium);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--dg-transition-normal);
+    cursor: pointer;
+    min-height: 32px;
+    white-space: nowrap;
 }
 
-.appbutton-link:hover {
-  background: #00a93d;
-  color: white;
-  transform: translateY(-1px);
+.button:hover {
+    background-color: var(--dg-surface-elevated);
+    color: var(--dg-primary);
+    border-color: var(--dg-primary);
+    transform: none;
 }
 
-.appbutton-link.large {
-  padding: 0.625rem 0.875rem;
-  font-size: clamp(1rem, 3vw, 1.125rem);
-  min-height: 48px;
+.button.large {
+    padding: var(--dg-space-5) var(--dg-space-8);
+    font-size: var(--dg-text-lg);
+    min-height: 48px;
 }
 
-@media (max-width: 640px) {
-  .appbutton-link {
-    width: 100%;
-    max-width: 280px;
-    text-align: center;
-    padding: 0.75rem 1rem;
-  }
-
-  .appbutton-link.large {
-    padding: 0.875rem 1.125rem;
-  }
+.button.small {
+    padding: var(--dg-space-2) var(--dg-space-4);
+    font-size: var(--dg-text-sm);
+    min-height: 36px;
 }
 
-.appbutton-link.secondary {
-  background: transparent;
-  border: 1px solid #00e062;
-  color: inherit;
-}
-
-.appbutton-link.secondary:hover {
-  background: #00e062;
-  color: white;
-}
-
-.appbutton-link-content {
-  color: inherit;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
+@media (max-width: 768px) {
+    .button {
+        font-size: var(--dg-text-xs);  /* Even smaller on mobile */
+        padding: var(--dg-space-1) var(--dg-space-3);
+    }
 }
