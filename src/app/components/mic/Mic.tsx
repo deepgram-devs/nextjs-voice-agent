@@ -10,9 +10,6 @@ interface MicProps {
   onError?: (error: string) => void;
 }
 
-/**
- * Captures audio at 24kHz and sends linear16 PCM data to Deepgram agent
- */
 export const Mic = ({ state, client, onError }: MicProps) => {
   const [isRecording, setIsRecording] = useState(false);
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -26,7 +23,6 @@ export const Mic = ({ state, client, onError }: MicProps) => {
     try {
       voiceAgentLog.microphone("Starting real-time microphone streaming...");
 
-      // Target 24kHz to match agent config
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: {
           echoCancellation: true,
@@ -120,7 +116,6 @@ export const Mic = ({ state, client, onError }: MicProps) => {
     voiceAgentLog.microphone("Microphone streaming stopped");
   }, []);
 
-  // Auto-start/stop recording based on connection state
   useEffect(() => {
     if (state === "open" && client && !isRecordingRef.current) {
       startRecording();
@@ -128,7 +123,6 @@ export const Mic = ({ state, client, onError }: MicProps) => {
       stopRecording();
     }
 
-    // Cleanup on unmount to prevent memory leaks
     return () => {
       if (isRecordingRef.current) {
         stopRecording();
