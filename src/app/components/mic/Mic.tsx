@@ -28,7 +28,6 @@ export const Mic = ({ state, client, onError }: MicProps) => {
           echoCancellation: true,
           noiseSuppression: true,
           autoGainControl: true,
-          sampleRate: 24000, // Match agent configuration
           channelCount: 1
         }
       });
@@ -36,7 +35,7 @@ export const Mic = ({ state, client, onError }: MicProps) => {
       streamRef.current = stream;
 
       // Match Deepgram agent expectation
-      const audioContext = new AudioContext({ sampleRate: 24000 });
+      const audioContext = new AudioContext();
       audioContextRef.current = audioContext;
 
 
