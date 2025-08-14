@@ -1,10 +1,3 @@
-/**
- * Deepgram Agent Models
- *
- * This file contains the models for the Deepgram Agent.
- * It is used to configure the agent's models.
- */
-
 enum ListenModel {
     General = "nova-3-general",
     Medical = "nova-3-medical",

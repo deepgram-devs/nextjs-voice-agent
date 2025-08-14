@@ -11,11 +11,9 @@ interface MicProps {
 }
 
 /**
- * Real-time microphone streaming component
  * Captures audio at 24kHz and sends linear16 PCM data to Deepgram agent
  */
 export const Mic = ({ state, client, onError }: MicProps) => {
-  // Recording state and audio processing refs
   const [isRecording, setIsRecording] = useState(false);
   const audioContextRef = useRef<AudioContext | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -28,7 +26,7 @@ export const Mic = ({ state, client, onError }: MicProps) => {
     try {
       voiceAgentLog.microphone("Starting real-time microphone streaming...");
 
-      // Get microphone access - targeting 24kHz to match agent config
+      // Target 24kHz to match agent config
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: {
           echoCancellation: true,
@@ -41,35 +39,34 @@ export const Mic = ({ state, client, onError }: MicProps) => {
 
       streamRef.current = stream;
 
-      // Create audio context at 24kHz to match Deepgram agent expectation
+      // Match Deepgram agent expectation
       const audioContext = new AudioContext({ sampleRate: 24000 });
       audioContextRef.current = audioContext;
 
-      // Create audio source from microphone stream
+
       const source = audioContext.createMediaStreamSource(stream);
       sourceRef.current = source;
 
-      // Create script processor for real-time audio processing
-      // Using 2048 buffer size for lower latency
+      // Use 2048 buffer size for lower latency
       const processor = audioContext.createScriptProcessor(2048, 1, 1);
       processorRef.current = processor;
 
-      // Real-time audio processing callback
+
       processor.onaudioprocess = (audioProcessingEvent) => {
         if (!client) return;
 
         const inputBuffer = audioProcessingEvent.inputBuffer;
-        const inputData = inputBuffer.getChannelData(0); // Get mono channel
+        const inputData = inputBuffer.getChannelData(0);
 
-        // Convert Float32Array directly to Int16Array (linear16 format) at 24kHz
+        // Convert to linear16 format for agent compatibility
         const pcmData = new Int16Array(inputData.length);
         for (let i = 0; i < inputData.length; i++) {
-          // Scale to 16-bit range and clamp
+          // Clamp to prevent distortion
           const sample = Math.max(-1, Math.min(1, inputData[i]));
           pcmData[i] = Math.round(sample * 0x7FFF);
         }
 
-        // Send raw PCM data as ArrayBuffer directly to agent
+
         const audioBuffer = pcmData.buffer;
 
         try {
@@ -80,7 +77,7 @@ export const Mic = ({ state, client, onError }: MicProps) => {
         }
       };
 
-      // Connect the audio graph: microphone -> processor -> destination
+
       source.connect(processor);
       processor.connect(audioContext.destination);
 
@@ -96,8 +93,6 @@ export const Mic = ({ state, client, onError }: MicProps) => {
 
   const stopRecording = useCallback(() => {
     voiceAgentLog.microphone("Stopping microphone streaming...");
-
-    // Disconnect audio graph
     if (processorRef.current) {
       processorRef.current.disconnect();
       processorRef.current = null;
@@ -108,13 +103,13 @@ export const Mic = ({ state, client, onError }: MicProps) => {
       sourceRef.current = null;
     }
 
-    // Close audio context
+
     if (audioContextRef.current) {
       audioContextRef.current.close();
       audioContextRef.current = null;
     }
 
-    // Stop media stream
+
     if (streamRef.current) {
       streamRef.current.getTracks().forEach(track => track.stop());
       streamRef.current = null;
@@ -125,7 +120,6 @@ export const Mic = ({ state, client, onError }: MicProps) => {
     voiceAgentLog.microphone("Microphone streaming stopped");
   }, []);
 
-  // === STATE MANAGEMENT ===
   // Auto-start/stop recording based on connection state
   useEffect(() => {
     if (state === "open" && client && !isRecordingRef.current) {
@@ -134,16 +128,16 @@ export const Mic = ({ state, client, onError }: MicProps) => {
       stopRecording();
     }
 
-    // Cleanup on unmount only
+    // Cleanup on unmount to prevent memory leaks
     return () => {
       if (isRecordingRef.current) {
         stopRecording();
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state, client]); // Intentionally excluding function deps to prevent infinite loop
+  }, [state, client]); // Exclude function deps to prevent infinite loop
 
-  // === UI RENDER ===
+
   if (state === "loading") {
     return (
       <div className="dg-status dg-status--warning">
