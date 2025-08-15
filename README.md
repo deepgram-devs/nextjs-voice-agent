@@ -72,6 +72,18 @@ Once running, you can access the application in your browser at `http://localhos
 - Speak into your microphone to interact with the Deepgram Voice Agent.
 - You should hear the agent's responses played back in your browser.
 
+## Browser Compatibility
+
+### Firefox Support
+
+This application fully supports Firefox as well as Chrome and Safari. Firefox requires special handling due to its unique [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) implementation:
+
+- **Sample Rate**: Firefox uses a default 48kHz sample rate and ignores `getUserMedia` sample rate constraints, while Chrome/Safari use 24kHz as requested
+- **Technical Solution**: Audio from Firefox is automatically downsampled from 48kHz to 24kHz before transmission to ensure consistent voice recognition across all browsers
+- **User Experience**: No differences in functionality - all browsers provide the same real-time voice interaction capabilities. But you'll likley see better performance in Chrome and Safari.
+
+If you see "48kHz" in the browser logs when using Firefox, this is expected behavior.
+
 ### Using the `app-requirements.mdc` File
 
 1. Clone or Fork this repo.
